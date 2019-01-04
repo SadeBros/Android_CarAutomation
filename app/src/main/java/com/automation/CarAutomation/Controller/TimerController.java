@@ -18,9 +18,6 @@ public class TimerController {
     }
 
 
-
     BluetoothContainer bluetoothContainer = BluetoothContainer.getInstance();
-
-
 
 }

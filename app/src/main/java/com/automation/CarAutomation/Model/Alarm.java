@@ -36,6 +36,9 @@ public class Alarm {
     private boolean enable = false;
 
     private long alarmDescription;
+    public long alarm(){
+        return alarmDescription;
+    }
 
     public Alarm(){}
 
@@ -45,12 +48,12 @@ public class Alarm {
     }
 
 
-    public String getAlarmSetCommand() {
-        return "as " + String.valueOf(alarmDescription) + " ;";
+    public String getAlarmAddCommand() {
+        return "aa " + String.valueOf(alarmDescription) + " ;";
     }
 
-    public String getAlarmDisarmCommand(){
-        return "ad " + id() + " ;";
+    public String getAlarmRemoveCommand(){
+        return "ar " + id() + " ;";
     }
 
     public String getDigitalClockFormat() {

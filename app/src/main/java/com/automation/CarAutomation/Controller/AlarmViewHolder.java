@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.automation.CarAutomation.Model.Alarm;
 import com.automation.CarAutomation.Model.BluetoothContainer;
 import com.automation.CarAutomation.Model.ArduinoVariableContainer;
-import com.automation.CarAutomation.Model.SharedPreferencesContainer;
 import com.automation.CarAutomation.R;
 import com.automation.CarAutomation.View.Activity.TabbedActivity;
 
@@ -91,7 +90,7 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnC
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Alarm clickedAlarm = arduinoVariableContainer.alarmList.get(getAdapterPosition());
-                        bluetoothContainer.bluetoothCommunicationThread.write(clickedAlarm.getAlarmDisarmCommand());
+                        bluetoothContainer.bluetoothCommunicationThread.write(clickedAlarm.getAlarmRemoveCommand());
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

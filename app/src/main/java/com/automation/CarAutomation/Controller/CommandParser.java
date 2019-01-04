@@ -53,9 +53,9 @@ public class CommandParser {
     }
 
     //  alarmDisarmResponse             = "ALARM_DISARM 2"
-    public static int getDisarmAlarmId(String alarmDisarmResponse) {
-        int indexOfAlarmId = alarmDisarmResponse.indexOf(" ") + 1;
-        String alarmId = alarmDisarmResponse.substring(indexOfAlarmId);                             //  "ALARM_DISARM " is trimmed.
+    public static int getRemovedAlarmId(String alarmRemoveResponse) {
+        int indexOfAlarmId = alarmRemoveResponse.indexOf(" ") + 1;
+        String alarmId = alarmRemoveResponse.substring(indexOfAlarmId);                             //  "ALARM_DISARM " is trimmed.
         return Integer.valueOf(alarmId);
     }
 

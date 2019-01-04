@@ -1,6 +1,5 @@
 package com.automation.CarAutomation.View.Activity;
 
-import com.automation.CarAutomation.Controller.App;
 import com.automation.CarAutomation.Controller.BluetoothCommunicationThread;
 import com.automation.CarAutomation.Controller.CommandParser;
 import com.automation.CarAutomation.Model.Alarm;
@@ -13,7 +12,6 @@ import com.automation.CarAutomation.View.Fragment.DashboardFragment;
 import com.automation.CarAutomation.View.Fragment.SettingsFragment;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -108,8 +106,6 @@ public class TabbedActivity extends AppCompatActivity {
                     startTimer("cg ;", 3000);
                     Log.e(" TA_Settings", "cg ;");
                 }
-
-
             }
 
             @Override
@@ -208,8 +204,7 @@ public class TabbedActivity extends AppCompatActivity {
             dashboardFragment.tvTemperatureValue.setText(String.format(Locale.getDefault(), "%.2f", arduinoVariableContainer.temperature) + " " + arduinoVariableContainer.temperatureUnit);
             dashboardFragment.tvCurrentValue.setText(String.format(Locale.getDefault(), "%.2f", arduinoVariableContainer.current) + " " + arduinoVariableContainer.currentUnit);
             dashboardFragment.tvVoltageValue.setText(String.format(Locale.getDefault(), "%.2f", arduinoVariableContainer.voltage) + " " + arduinoVariableContainer.voltageUnit);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) { }
     }
 
     public void updateRelayStatus(int statusOfRelays, DashboardFragment dashboardFragment) {
@@ -230,8 +225,7 @@ public class TabbedActivity extends AppCompatActivity {
         try {
             SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem());
             settingsFragment.tvRealtimeClock.setText(arduinoVariableContainer.dateTimeOfRealTimeClock);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) { }
     }
 
     private void UpdateAlarmUI() {
@@ -330,6 +324,10 @@ public class TabbedActivity extends AppCompatActivity {
                             } else if (command.startsWith("ALARM_TRIGGERED")) {
                                 int triggeredAlarmId = CommandParser.getTriggeredAlarmId(command);
 
+                                //  TODO: Bağlantı varken tetiklenen alarm, günlük olabilir, haftalık olabilir.
+                                //  Bir kere gerçekleşecek bir alarm ise, veri tabanında bulunup silinmesi gerekir.
+                                //  Her hafta gerçekleşen bir alarm ise, bir uyarı mesajı tetiklenebilir.
+
 //                                for (Alarm alarm : arduinoVariableContainer.alarmList)
 //                                    if (alarm.id == triggeredAlarmId && alarm.repeat != 1) {
 //                                        arduinoVariableContainer.alarmList.remove(alarm);
@@ -339,21 +337,21 @@ public class TabbedActivity extends AppCompatActivity {
 //                                    }
 
                                 UpdateAlarmUI();
-                            } else if (command.startsWith("ALARM_DISARM")) {
+                            } else if (command.startsWith("ALARM_REMOVE")) {
 
-                                int alarmID = CommandParser.getDisarmAlarmId(command);
+                                int alarmID = CommandParser.getRemovedAlarmId(command);
 
-//                                for (Alarm alarm : arduinoVariableContainer.alarmList)
-//                                    if (alarm.id == alarmID) {
-//                                        arduinoVariableContainer.alarmList.remove(alarm);
+                                for (Alarm alarm : arduinoVariableContainer.alarmList)
+                                    if (alarm.id() == alarmID) {
+                                        arduinoVariableContainer.alarmList.remove(alarm);
 //                                        sharedPreferencesContainer.editor.remove(String.valueOf("alarmId" + alarmID));
 //                                        sharedPreferencesContainer.editor.commit();
 //                                        break;
-//                                    }
+                                    }
 
                                 UpdateAlarmUI();
 
-                            } // if (command.startsWith("ALARM_DISARM"))
+                            } // if (command.startsWith("ALARM_REMOVE"))
                         }// if( commandResponse.startsWith("OK")
 
                         else {

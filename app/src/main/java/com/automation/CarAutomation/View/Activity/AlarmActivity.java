@@ -1,5 +1,6 @@
 package com.automation.CarAutomation.View.Activity;
 
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -15,6 +16,7 @@ import com.automation.CarAutomation.Controller.App;
 import com.automation.CarAutomation.Model.Alarm;
 import com.automation.CarAutomation.Model.ArduinoVariableContainer;
 import com.automation.CarAutomation.Model.BluetoothContainer;
+import com.automation.CarAutomation.Model.DatabaseHelper;
 import com.automation.CarAutomation.Model.SharedPreferencesContainer;
 import com.automation.CarAutomation.R;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -107,8 +109,11 @@ public class AlarmActivity extends AppCompatActivity implements TimePickerDialog
                 arduinoVariableContainer.alarmList.add(alarm);
 
                 try {
-                    bluetoothContainer.bluetoothCommunicationThread.write(alarm.getAlarmSetCommand());
-                    Log.e(" AA_alarmDescription", alarm.getAlarmSetCommand());
+                    bluetoothContainer.bluetoothCommunicationThread.write(alarm.getAlarmAddCommand());
+                    DatabaseHelper database = new DatabaseHelper(App.getContext());
+                    boolean isInsertSuccesfull = database.insertData(alarm);
+                    Log.e(" AA_isInsertSuccesfull", String.valueOf(isInsertSuccesfull));
+                    Log.e(" AA_alarmDescription", alarm.getAlarmAddCommand());
                     Toast.makeText(getBaseContext(), "Alarm Saved Successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }catch (Exception e){ }
